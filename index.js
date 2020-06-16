@@ -14,7 +14,7 @@ app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 app.use(cors())
 //dburl = "mongodb://localhost:27017/"
-dburl="mongodb+srv://antonyrahul96:<password>@cluster0-lmgka.mongodb.net/test?retryWrites=true&w=majority"
+dburl="mongodb+srv://antonyrahul96:antonyrahul96@cluster0-lmgka.mongodb.net/test?retryWrites=true&w=majority"
 busdb ="busdb"
 buscollection = "buscollection"
 routedb = "routedb"
