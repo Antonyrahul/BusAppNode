@@ -13,7 +13,8 @@ const jwt =  require("jsonwebtoken");
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 app.use(cors())
-dburl = "mongodb://localhost:27017/"
+//dburl = "mongodb://localhost:27017/"
+dburl="mongodb+srv://antonyrahul96:<password>@cluster0-lmgka.mongodb.net/test?retryWrites=true&w=majority"
 busdb ="busdb"
 buscollection = "buscollection"
 routedb = "routedb"
@@ -603,8 +604,92 @@ app.get('/genRouteId', function (req, res) {
     
     })
 
+    
 
-app.listen(4123, function () {
+    app.post('/getuserprofileinfo', function (req, res) {
+        console.log(req.body);
+        var collname = userscollecton
+        if(req.body.isTravels==true)
+        {
+            collname=travelscollection
+        }
+        mongodbclient.connect(dburl, function (err, client) {
+            useUnifiedTopology: true
+
+            if (err) throw err;
+            var db = client.db(usersDB);
+         var finddata ={
+             email:req.body.email,
+             uniqueid:req.body.uniqueid
+         }
+               
+                    db.collection(collname).findOne(finddata,function (err, data) {
+                        if (err) throw err;
+                        client.close();
+                        res.json({
+                            message: "saved",
+                            data:data
+                        })
+                    })
+                
+              
+                // Store hash in your password DB.
+            
+    
+           // client.close();
+        });
+    
+    })
+
+
+
+    
+    app.post('/editprofile', function (req, res) {
+        console.log(req.body);
+        var collname = userscollecton
+        if(req.body.isTravels==true)
+        {
+            collname=travelscollection
+        }
+        mongodbclient.connect(dburl, function (err, client) {
+            useUnifiedTopology: true
+
+            if (err) throw err;
+            var db = client.db(usersDB);
+            
+         
+            var finddata=
+            {
+                uniqueid:req.body.uniqueid
+            }
+               var updatedata={$set:{
+                    email :req.body.email,
+                    name:req.body.name,
+                    phone:req.body.phone
+                    }
+                }
+                    db.collection(collname).findOneAndUpdate(finddata,updatedata,function (err, data) {
+                        if (err) throw err;
+                        client.close();
+                        res.json({
+                            message: "saved",
+                            data:data
+                        })
+                    })
+                
+              
+                // Store hash in your password DB.
+            
+    
+           // client.close();
+        });
+    
+    })
+
+
+
+
+app.listen(process.env.PORT, function () {
 
     console.log("listening on port 4123");
 });
